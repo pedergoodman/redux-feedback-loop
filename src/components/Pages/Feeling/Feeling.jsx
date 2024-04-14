@@ -1,33 +1,42 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { Button } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Feeling() {
-  // State
+  // useSate
   const [feeling, setFeeling] = useState("");
-  // Dispatch
+  // useSelector
+  const feelingHistory = useSelector((store) => store.feedbacks.feeling);
+  // useDispatch
   const dispatch = useDispatch();
-  // History
+  // useHistory
   const history = useHistory();
-
+  // handle input change
   const handleChange = (event) => {
-    // set feeling to user input
+    // set comments to input value
     setFeeling(event.target.value);
   };
-
+  // handle submit next button
   const handleNext = () => {
-    // dispatch here to store
+    // dispatch data to store
     dispatch({ type: "FEELING", payload: feeling });
-    // direct to next page
+    // go to understanding page
     history.push("/understanding");
   };
+
+  // If feelingHistory = true, set comments to feelingHistory
+  useEffect(() => {
+    if (feelingHistory) {
+      setFeeling(feelingHistory);
+    }
+  }, []);
 
   // Form Validation
   const isFeelingSelected = feeling !== "";

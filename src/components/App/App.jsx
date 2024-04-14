@@ -15,23 +15,24 @@ import Submit from "../Pages/Submit/Submit";
 import ThankYou from "../Pages/ThankYou/ThankYou";
 
 function App() {
-  // dispatch
+  // useDispatch 
   const dispatch = useDispatch();
 
-  // GET feedbacks
+  // GET feedbacks data from server 
   const fetchFeedbacks = () => {
     axios
       .get("/feedbacks")
       .then((response) => {
-        // dispatch here
+        // dispatch data to store to update the state
         dispatch({ type: "FEEDBACKS", payload: response.data });
       })
       .catch((err) => {
         console.log("Error in GET req", error);
       });
   };
+ 
 
-  // load feedbacks once
+ // fetchFeedbacks run once 
   useEffect(() => {
     fetchFeedbacks();
   }, []);
@@ -41,9 +42,6 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/admin">
-            <Admin fetchFeedbacks={fetchFeedbacks} />
-          </Route>
           <Route exact path="/">
             <Feeling />
           </Route>
@@ -61,6 +59,9 @@ function App() {
           </Route>
           <Route exact path="/thankyou">
             <ThankYou />
+          </Route>
+          <Route exact path="/admin">
+            <Admin fetchFeedbacks={fetchFeedbacks} />
           </Route>
         </Switch>
       </Router>
